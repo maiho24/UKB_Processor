@@ -78,11 +78,11 @@ Arguments:
   OUTPUT_FILE   Output CSV file  [required]
 
 Options:
-  --fields TEXT             Field IDs to extract
-  --file PATH               Text file with field IDs
-  --remove_file, -r         Remove rows where all extracted fields (excl. eid) are empty
-  --instance, -i TEXT       Extract specific instance only. If not specified, all instances will be extracted [default: None]
-  --help                    Show this message and exit.
+  --fields TEXT     Field IDs to extract
+  --file PATH       Text file with field IDs
+  --remove_file     Remove rows where all extracted fields (excl. eid) are empty
+  --instance TEXT   Extract specific instance only. If not specified, all instances will be extracted [default: None]
+  --help            Show this message and exit.
 ```
 
 ## Usage Examples
