@@ -1,6 +1,9 @@
 # UKB Processor
 
-A Python tool for processing UK Biobank data files, with a focus on efficient data conversion and field extraction.
+A Python tool for processing UK Biobank data files, with a focus on efficient data conversion and field extraction. This tool facilitates a two-step pipeline:
+
+1. **Convert CSV files to Parquet format**: Ensures fast data loading and efficient storage.
+2. **Extract specific fields**: Allows flexible extraction of relevant data from Parquet files, with options for filtering, handling empty rows, and selecting specific instances.
 
 ## Deprecation Notice
 **Important**: With the introduction of the UK Biobank Research Analysis Platform (RAP), which provides native tools for data analysis and management, this package is no longer officially supported. We recommend using the RAP for working with UK Biobank data whenever possible. This package remains available for legacy purposes and offline workflows.
@@ -31,107 +34,49 @@ conda activate ukb-processor
 
 You can view help for any command using the `--help` or `-h` option:
 
-### Main help
+**Main Help**
 ```bash
-$ ukb-processor --help
-Usage: ukb-processor [OPTIONS] COMMAND [ARGS]...
-
-  UK Biobank data processing tools
-
-Options:
-  --help  Show this message and exit.
-
-Commands:
-  convert  Convert UKB CSV file to Parquet format.
-  extract  Extract specified fields from Parquet file.
+ukb-processor --help
 ```
 
-### Convert command help
+**Command-Specific Help**
 ```bash
-$ ukb-processor convert --help
-Usage: ukb-processor convert [OPTIONS] INPUT_FILE OUTPUT_FILE
-
-  Convert UKB CSV file to Parquet format.
-
-Arguments:
-  INPUT_FILE   Input CSV file  [required]
-  OUTPUT_FILE  Output Parquet file  [required]
-
-Options:
-  --compression TEXT     Compression algorithm  [default: zstd]
-  --chunk-size INTEGER   Chunk size for processing  [default: 50000]
-  --help                 Show this message and exit.
-```
-
-### Extract command help
-```bash
-$ ukb-processor extract --help
-Usage: ukb-processor extract [OPTIONS] PARQUET_FILE OUTPUT_FILE
-
-  Extract specified fields from Parquet file.
-
-  Fields can be specified either by --fields or --file or both. When both are
-  provided, fields from both sources will be combined.
-
-Arguments:
-  PARQUET_FILE  Input Parquet file  [required]
-  OUTPUT_FILE   Output CSV file  [required]
-
-Options:
-  --fields TEXT     Field IDs to extract
-  --file PATH       Text file with field IDs
-  --remove_file     Remove rows where all extracted fields (excl. eid) are empty
-  --instance TEXT   Extract specific instance only. If not specified, all instances will be extracted [default: None]
-  --help            Show this message and exit.
+ukb-processor convert --help
+ukb-processor extract --help
 ```
 
 ## Usage Examples
 
-### Converting CSV to Parquet
+### General Workflow
 
+1. Convert a UKB CSV file to a Parquet file:
 ```bash
-ukb-processor convert input.csv output.parquet --compression zstd
+ukb-processor convert input.csv output.parquet
 ```
 
-### Extracting Fields
-
-There are three ways to specify which fields to extract:
-
-1. Using command line arguments only:
+2. Extract specific fields from the Parquet file:
 ```bash
 ukb-processor extract data.parquet output.csv --fields 31 21022 21001
 ```
 
-2. Using a text file only:
+### Additional Options
+
+* Define the fields in a .txt file (one field ID per line):
 ```bash
 ukb-processor extract data.parquet output.csv --file fields.txt
 ```
 
-3. Using both methods together:
+* Using both methods (`--fields` & `--file`) together:
 ```bash
 ukb-processor extract data.parquet output.csv --fields 31 21022 --file fields.txt
 ```
 
-When using both `--fields` and `--file`:
-- Fields from both sources will be combined
-- Duplicate fields are automatically removed
-- You'll get a notification that fields were combined
-- Any overlapping fields will be reported
-- A complete list of processed fields will be shown
-
-Format for fields.txt file (one field ID per line):
-```
-31
-21022
-21001
-```
-
-4. Remove rows where all extracted fields are empty (excluding eid):
+* Remove rows where all extracted fields are empty (excluding eid):
 ```bash
 ukb-processor extract data.parquet output.csv --fields 31 21022 --remove-empty
 ```
 
-5. Extract specific instance of fields
+* Extract specific instances
 ```bash
 ukb-processor extract data.parquet output.csv --fields 31 21022 --instance 1.0
 ```
