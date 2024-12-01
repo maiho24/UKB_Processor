@@ -3,7 +3,7 @@
 A Python tool for processing UK Biobank data files, with a focus on efficient data conversion and field extraction.
 
 ## Deprecation Notice
-Important: With the introduction of the UK Biobank Research Analysis Platform (RAP), which provides native tools for data analysis and management, this package is no longer officially supported. We recommend using the RAP for working with UK Biobank data whenever possible. This package remains available for legacy purposes and offline workflows.
+**Important**: With the introduction of the UK Biobank Research Analysis Platform (RAP), which provides native tools for data analysis and management, this package is no longer officially supported. We recommend using the RAP for working with UK Biobank data whenever possible. This package remains available for legacy purposes and offline workflows.
 
 ## Installation
 
