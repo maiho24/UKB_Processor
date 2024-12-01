@@ -41,7 +41,6 @@ def csv_to_parquet(
             input_path,
             low_memory=True,
             rechunk=False,
-            rows_per_chunk=chunk_size,
             n_threads=n_threads
         )
         

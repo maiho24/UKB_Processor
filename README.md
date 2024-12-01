@@ -58,7 +58,7 @@ Arguments:
   OUTPUT_FILE  Output Parquet file  [required]
 
 Options:
-  --compression TEXT      Compression algorithm  [default: zstd]
+  --compression TEXT     Compression algorithm  [default: zstd]
   --chunk-size INTEGER   Chunk size for processing  [default: 50000]
   --help                 Show this message and exit.
 ```
