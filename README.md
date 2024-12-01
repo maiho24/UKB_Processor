@@ -78,9 +78,11 @@ Arguments:
   OUTPUT_FILE   Output CSV file  [required]
 
 Options:
-  --fields TEXT    Field IDs to extract
-  --file PATH     Text file with field IDs
-  --help          Show this message and exit.
+  --fields TEXT             Field IDs to extract
+  --file PATH               Text file with field IDs
+  --remove_file, -r BOOL    Remove rows where all extracted fields (excl. eid) are empty [default: FALSE]
+  --instance, -i TEXT       Extract specific instance only. If not specified, all instances will be extracted [default: None]
+  --help                    Show this message and exit.
 ```
 
 ## Usage Examples
@@ -122,6 +124,16 @@ Format for fields.txt file (one field ID per line):
 31
 21022
 21001
+```
+
+4. Remove rows where all extracted fields are empty (excluding eid):
+```bash
+ukb-processor extract data.parquet output.csv --fields 31 21022 --remove-empty
+```
+
+5. Extract specific instance of fields
+```bash
+ukb-processor extract data.parquet output.csv --fields 31 21022 --instance 1.0
 ```
 
 ## Python API

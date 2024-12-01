@@ -28,7 +28,9 @@ def extract(
     parquet_file: Path = typer.Argument(..., help="Input Parquet file"),
     output_file: Path = typer.Argument(..., help="Output CSV file"),
     field_ids: Optional[List[str]] = typer.Option(None, "--fields", "-f", help="Field IDs to extract"),
-    field_file: Optional[Path] = typer.Option(None, "--file", help="Text file with field IDs")
+    field_file: Optional[Path] = typer.Option(None, "--file", help="Text file with field IDs"),
+    remove_empty: bool = typer.Option(False, "--remove-empty", "-r", help="Remove rows where all extracted fields are empty"),
+    instance: Optional[str] = typer.Option(None, "--instance", "-i", help="Extract specific instance only (e.g., '1.0', '2.0')")
 ):
     """
     Extract specified fields from Parquet file.
@@ -45,11 +47,14 @@ def extract(
             parquet_file,
             output_file,
             field_ids=field_ids,
-            field_file=field_file
+            field_file=field_file,
+            remove_empty=remove_empty,
+            instance=instance
         )
         
         rprint(f"[green]✓ Successfully extracted fields to {output_file}[/green]")
         
+        # Show summary of processed fields in a single line
         if field_ids and field_file:
             rprint("\n[yellow]Note: Combined fields from both command line and file[/yellow]")
             
@@ -57,6 +62,7 @@ def extract(
         rprint(f"\n[bold]Processed fields:[/bold] {fields_str}")
             
         if field_ids and field_file:
+            # Show which fields came from where if there's overlap
             cmd_fields = set(field_ids)
             file_fields = set(extractor.read_field_ids(field_file))
             overlap = cmd_fields & file_fields
@@ -71,4 +77,3 @@ def extract(
 
 if __name__ == "__main__":
     app()
-    
