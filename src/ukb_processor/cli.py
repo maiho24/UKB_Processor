@@ -29,7 +29,7 @@ def extract(
     output_file: Path = typer.Argument(..., help="Output CSV file"),
     field_ids: Optional[List[str]] = typer.Option(None, "--fields", "-f", help="Field IDs to extract"),
     field_file: Optional[Path] = typer.Option(None, "--file", help="Text file with field IDs"),
-    remove_empty: bool = typer.Option(False, "--remove-empty", "-r", help="Remove rows where all extracted fields are empty"),
+    remove_empty: Optional[bool] = typer.Option(False, "--remove-empty", "-r", help="Remove rows where all extracted fields are empty"),
     instance: Optional[str] = typer.Option(None, "--instance", "-i", help="Extract specific instance only (e.g., '1.0', '2.0')")
 ):
     """
