@@ -82,13 +82,15 @@ def extract_fields(
     
     # Apply empty row filtering if requested
     if remove_empty:
-        # Create a condition that checks if all fields (except eid) are null
+        # Create a condition that checks if all fields (except eid) are empty
         non_eid_cols = [col for col in selected_cols if col != 'eid']
         if non_eid_cols:  # Only apply filter if we have non-eid columns
             query = query.filter(
-                pl.any_horizontal(
-                    [pl.col(col).is_not_null() for col in non_eid_cols]
-                )
+                pl.any_horizontal([
+                    (pl.col(col).is_not_null()) & 
+                    (pl.col(col).cast(pl.Utf8).str.strip().str.lengths() > 0)
+                    for col in non_eid_cols
+                ])
             )
     
     # Collect the DataFrame and write to CSV
