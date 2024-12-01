@@ -4,25 +4,24 @@ A Python tool for processing UK Biobank data files, with a focus on efficient da
 
 ## Installation
 
-There are two ways to install UKB Processor:
+Using Conda helps manage dependencies and ensures compatibility across different systems. We recommend using [Miniconda](https://docs.conda.io/en/latest/miniconda.html) to keep your environment lightweight.
 
-### 1. Install from source (recommended)
+### 1. Create and activate a new conda environment:
 ```bash
-# Clone the repository
-git clone https://github.com/yourusername/UKB_Processor.git
-cd UKB_Processor
-
-# Install in editable mode with development dependencies
-pip install -e ".[dev]"
+conda create -n ukb-processor
+conda activate ukb-processor
 ```
 
-### 2. Install from local directory
+### 2. Clone and install the package:
 ```bash
-# Navigate to the directory containing the package
-cd path/to/UKB_Processor
+git clone https://github.com/yourusername/UKB_Processor.git
+cd UKB_Processor
+pip install -e .
+```
 
-# Install using pip
-pip install .
+**Note**: Make sure to always activate the environment before using the package:
+```bash
+conda activate ukb-processor
 ```
 
 ## Command Help
