@@ -10,7 +10,7 @@ def extract_fields(
     field_file: Optional[Union[str, Path]] = None
 ) -> Set[str]:
     """
-    Extract specified fields from Parquet file.
+    Extract specified fields from Parquet file. Always includes the 'eid' field.
     
     Args:
         parquet_file: Path to input Parquet file
@@ -19,11 +19,12 @@ def extract_fields(
         field_file: Optional path to text file containing field IDs
         
     Returns:
-        Set of all field IDs that were processed
+        Set of all field IDs that were processed (excluding 'eid')
         
     Raises:
         ValueError: If neither field_ids nor field_file is provided
         FileNotFoundError: If input files don't exist
+        ValueError: If 'eid' column is not present in the Parquet file
     """
     if field_ids is None and field_file is None:
         raise ValueError("Must provide either field_ids or field_file")
@@ -46,20 +47,21 @@ def extract_fields(
         validated_file_fields = validate_field_ids(file_fields)
         all_field_ids.update(validated_file_fields)
     
-    # Read Parquet file
     df = pl.scan_parquet(parquet_path)
     
-    # Get schema without warning
     schema = df.collect_schema()
     available_columns = schema.names()
     
-    # Get columns for specified fields
-    selected_cols = ['eid']  # Always include eid
+    if 'eid' not in available_columns:
+        raise ValueError("Required 'eid' column not found in Parquet file")
+    
+    selected_cols = []
+    selected_cols.append('eid')
+    
     for field_id in all_field_ids:
-        field_cols = [col for col in available_columns if col.startswith(f"{field_id}-")]
+        field_cols = [col for col in available_columns if col == field_id or col.startswith(f"{field_id}-")]
         selected_cols.extend(field_cols)
     
-    # Select columns and write to CSV
     df.select(selected_cols).sink_csv(output_path)
     
     return all_field_ids

@@ -18,7 +18,7 @@ def convert(
     """Convert UKB CSV file to Parquet format."""
     try:
         converter.csv_to_parquet(input_file, output_file, compression, chunk_size)
-        rprint(f"[green]? Successfully converted {input_file} to {output_file}[/green]")
+        rprint(f"[green]✓ Successfully converted {input_file} to {output_file}[/green]")
     except Exception as e:
         rprint(f"[red]Error: {str(e)}[/red]")
         raise typer.Exit(1)
@@ -48,26 +48,22 @@ def extract(
             field_file=field_file
         )
         
-        rprint(f"[green]? Successfully extracted fields to {output_file}[/green]")
+        rprint(f"[green]✓ Successfully extracted fields to {output_file}[/green]")
         
-        # Show summary of processed fields
         if field_ids and field_file:
             rprint("\n[yellow]Note: Combined fields from both command line and file[/yellow]")
             
-        rprint("\n[bold]Processed fields:[/bold]")
-        for field in sorted(processed_fields):
-            rprint(f"  * {field}")  # Using simple asterisk instead of bullet point
+        fields_str = " | ".join(sorted(processed_fields))
+        rprint(f"\n[bold]Processed fields:[/bold] {fields_str}")
             
         if field_ids and field_file:
-            # Show which fields came from where
             cmd_fields = set(field_ids)
             file_fields = set(extractor.read_field_ids(field_file))
             overlap = cmd_fields & file_fields
             
             if overlap:
-                rprint("\n[yellow]The following fields were specified in both sources:[/yellow]")
-                for field in sorted(overlap):
-                    rprint(f"  * {field}")  # Using simple asterisk instead of bullet point
+                overlap_str = " | ".join(sorted(overlap))
+                rprint(f"\n[yellow]Duplicate fields:[/yellow] {overlap_str}")
                     
     except Exception as e:
         rprint(f"[red]Error: {str(e)}[/red]")
