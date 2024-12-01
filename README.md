@@ -61,12 +61,12 @@ ukb-processor extract data.parquet output.csv --fields 31 21022 21001
 
 ### Additional Options
 
-* Define the fields in a .txt file (one field ID per line):
+* Define the field IDs in a .txt file (one field ID per line):
 ```bash
 ukb-processor extract data.parquet output.csv --file fields.txt
 ```
 
-* Using both methods (`--fields` & `--file`) together:
+* Use both methods (`--fields` & `--file`) together:
 ```bash
 ukb-processor extract data.parquet output.csv --fields 31 21022 --file fields.txt
 ```
@@ -76,7 +76,7 @@ ukb-processor extract data.parquet output.csv --fields 31 21022 --file fields.tx
 ukb-processor extract data.parquet output.csv --fields 31 21022 --remove-empty
 ```
 
-* Extract specific instances
+* Extract specific instances:
 ```bash
 ukb-processor extract data.parquet output.csv --fields 31 21022 --instance 1.0
 ```
