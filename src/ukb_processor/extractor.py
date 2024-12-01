@@ -39,6 +39,7 @@ def extract_fields(
     if not parquet_path.exists():
         raise FileNotFoundError(f"Parquet file {parquet_path} not found")
     
+    # Collect all field IDs from both sources
     all_field_ids: Set[str] = set()
     
     if field_ids:
@@ -50,37 +51,47 @@ def extract_fields(
         validated_file_fields = validate_field_ids(file_fields)
         all_field_ids.update(validated_file_fields)
     
+    # Read Parquet file
     df = pl.scan_parquet(parquet_path)
     
+    # Get schema without warning
     schema = df.collect_schema()
     available_columns = schema.names()
     
+    # Check if 'eid' column exists
     if 'eid' not in available_columns:
         raise ValueError("Required 'eid' column not found in Parquet file")
     
+    # Get columns for specified fields
     selected_cols = ['eid']
     
+    # Then add columns for each field ID
     for field_id in all_field_ids:
         if instance:
+            # Look for exact instance match
             field_col = f"{field_id}-{instance}"
             if field_col in available_columns:
                 selected_cols.append(field_col)
         else:
+            # Get all instances
             field_cols = [col for col in available_columns if col == field_id or col.startswith(f"{field_id}-")]
             selected_cols.extend(field_cols)
     
+    # Select columns
     query = df.select(selected_cols)
     
     # Apply empty row filtering if requested
     if remove_empty:
+        # Create a condition that checks if all fields (except eid) are null
         non_eid_cols = [col for col in selected_cols if col != 'eid']
-        if non_eid_cols:
+        if non_eid_cols:  # Only apply filter if we have non-eid columns
             query = query.filter(
                 pl.any_horizontal(
                     [pl.col(col).is_not_null() for col in non_eid_cols]
                 )
             )
     
-    query.sink_csv(output_path)
+    # Collect the DataFrame and write to CSV
+    query.collect().write_csv(output_path)
     
     return all_field_ids
