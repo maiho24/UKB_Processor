@@ -5,7 +5,10 @@ from rich import print as rprint
 from typing import List, Optional
 from . import converter, extractor
 
-app = typer.Typer(help="UK Biobank data processing tools")
+app = typer.Typer(
+    help="UK Biobank data processing tools",
+    context_settings={"help_option_names": ["--help", "-h"]}
+)
 console = Console()
 
 @app.command()
