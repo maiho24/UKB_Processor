@@ -170,4 +170,4 @@ extract_fields(
 ```
 
 ## Contribution
-Contributions are welcome! If you find a bug or have ideas for enhancements, feel free to open an issue or submit a pull request. Please make sure your code follows the project's coding guidelines and includes relevant test cases.
+Contributions are welcome! If you find a bug or have ideas for enhancements, feel free to open an issue or submit a pull request.
