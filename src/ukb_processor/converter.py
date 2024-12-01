@@ -54,7 +54,6 @@ def csv_to_parquet(
     file_size = input_path.stat().st_size
     
     if streaming:
-        # Use streaming approach for large files
         try:
             # First pass: count columns and sample data
             df_sample = pl.scan_csv(input_path).fetch(1000)
@@ -64,7 +63,7 @@ def csv_to_parquet(
             if chunk_size is None:
                 chunk_size = estimate_chunk_size(file_size, num_columns)
             
-            # Create streaming reader
+            # Create streaming reader with optimized settings
             csv_reader = pl.scan_csv(
                 input_path,
                 low_memory=True,
@@ -75,10 +74,7 @@ def csv_to_parquet(
             csv_reader.sink_parquet(
                 output_path,
                 compression=compression,
-                row_group_size=chunk_size,
-                use_pyarrow=True,
-                compression_level=3,  # Balance between compression and speed
-                statistics=False  # Disable statistics for better performance
+                row_group_size=chunk_size
             )
             
         except Exception as e:
