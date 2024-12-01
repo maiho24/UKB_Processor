@@ -24,13 +24,11 @@ def csv_to_parquet(
     if not input_path.exists():
         raise FileNotFoundError(f"Input file {input_path} not found")
         
-    # Ensure output directory exists
     output_path.parent.mkdir(parents=True, exist_ok=True)
     
     try:
         print(f"Starting conversion of {input_path}")
         
-        # Use scan_csv with optimal memory settings
         csv_reader = pl.scan_csv(
             input_path,
             low_memory=True,     # Reduces memory usage
@@ -42,7 +40,6 @@ def csv_to_parquet(
         
         print("CSV scanning initialized, starting parquet conversion...")
         
-        # Write to parquet
         csv_reader.sink_parquet(
             output_path,
             compression=compression,

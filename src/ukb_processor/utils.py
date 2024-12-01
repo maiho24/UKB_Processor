@@ -17,7 +17,6 @@ def read_field_ids(field_file: Union[str, Path]) -> List[str]:
         raise FileNotFoundError(f"Field ID file {field_path} not found")
         
     with open(field_path) as f:
-        # Remove whitespace and empty lines
         return [line.strip() for line in f if line.strip()]
 
 def get_field_columns(df_columns: List[str], field_ids: Set[str]) -> List[str]:
@@ -31,7 +30,7 @@ def get_field_columns(df_columns: List[str], field_ids: Set[str]) -> List[str]:
     Returns:
         List of column names matching the field IDs
     """
-    selected_cols = ['eid']  # Always include eid
+    selected_cols = ['eid']
     
     for field_id in field_ids:
         field_cols = [col for col in df_columns if col.startswith(f"{field_id}-")]
@@ -54,10 +53,8 @@ def validate_field_ids(field_ids: List[str]) -> List[str]:
     """
     validated = []
     for field_id in field_ids:
-        # Remove any whitespace
         field_id = field_id.strip()
         
-        # Check if field_id is numeric
         if not field_id.isdigit():
             raise ValueError(f"Invalid field ID: {field_id}. Must be numeric.")
             
