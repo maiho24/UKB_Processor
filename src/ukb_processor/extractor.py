@@ -19,16 +19,11 @@ def extract_fields(
         output_file: Path to output CSV file
         field_ids: Optional list of field IDs provided directly
         field_file: Optional path to text file containing field IDs
-        remove_empty: If True, removes rows where all extracted fields (excluding eid) are null
+        remove_empty: If True, removes rows where all extracted fields (excluding eid) are either null or empty string
         instance: Optional instance identifier (e.g., "1.0", "2.0") to extract specific instances only
         
     Returns:
         Set of all field IDs that were processed (excluding 'eid')
-        
-    Raises:
-        ValueError: If neither field_ids nor field_file is provided
-        FileNotFoundError: If input files don't exist
-        ValueError: If 'eid' column is not present in the Parquet file
     """
     if field_ids is None and field_file is None:
         raise ValueError("Must provide either field_ids or field_file")
@@ -88,7 +83,7 @@ def extract_fields(
             query = query.filter(
                 pl.any_horizontal([
                     (pl.col(col).is_not_null()) & 
-                    (pl.col(col).cast(pl.Utf8).str.strip().str.lengths() > 0)
+                    (pl.col(col).cast(pl.Utf8) != "")
                     for col in non_eid_cols
                 ])
             )
