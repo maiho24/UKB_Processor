@@ -13,7 +13,7 @@ def convert(
     input_file: Path = typer.Argument(..., help="Input CSV file"),
     output_file: Path = typer.Argument(..., help="Output Parquet file"),
     compression: str = typer.Option("zstd", help="Compression algorithm"),
-    chunk_size: int = typer.Option(100000, help="Chunk size for processing")
+    chunk_size: int = typer.Option(50000, help="Chunk size for processing")
 ):
     """Convert UKB CSV file to Parquet format."""
     try:
