@@ -49,10 +49,14 @@ def extract_fields(
     # Read Parquet file
     df = pl.scan_parquet(parquet_path)
     
+    # Get schema without warning
+    schema = df.collect_schema()
+    available_columns = schema.names()
+    
     # Get columns for specified fields
     selected_cols = ['eid']  # Always include eid
     for field_id in all_field_ids:
-        field_cols = [col for col in df.columns if col.startswith(f"{field_id}-")]
+        field_cols = [col for col in available_columns if col.startswith(f"{field_id}-")]
         selected_cols.extend(field_cols)
     
     # Select columns and write to CSV
