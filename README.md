@@ -17,7 +17,7 @@ conda activate ukb-processor
 
 ### 2. Clone and install the package:
 ```bash
-git clone https://github.com/yourusername/UKB_Processor.git
+git clone https://github.com/maiho24/UKB_Processor.git
 cd UKB_Processor
 pip install -e .
 ```
