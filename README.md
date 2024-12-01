@@ -2,6 +2,9 @@
 
 A Python tool for processing UK Biobank data files, with a focus on efficient data conversion and field extraction.
 
+## Deprecation Notice
+Important: With the introduction of the UK Biobank Research Analysis Platform (RAP), which provides native tools for data analysis and management, this package is no longer officially supported. We recommend using the RAP for working with UK Biobank data whenever possible. This package remains available for legacy purposes and offline workflows.
+
 ## Installation
 
 Using Conda helps manage dependencies and ensures compatibility across different systems. We recommend using [Miniconda](https://docs.conda.io/en/latest/miniconda.html) to keep your environment lightweight.
@@ -114,21 +117,6 @@ When using both `--fields` and `--file`:
 - Any overlapping fields will be reported
 - A complete list of processed fields will be shown
 
-Example output when using both sources:
-```
-? Successfully extracted fields to output.csv
-
-Note: Combined fields from both command line and file
-
-Processed fields:
-  * 21001
-  * 21022
-  * 31
-
-The following fields were specified in both sources:
-  * 31
-```
-
 Format for fields.txt file (one field ID per line):
 ```
 31
@@ -168,3 +156,6 @@ extract_fields(
     field_file="fields.txt"
 )
 ```
+
+## Contribution
+Contributions are welcome! If you find a bug or have ideas for enhancements, feel free to open an issue or submit a pull request. Please make sure your code follows the project's coding guidelines and includes relevant test cases.
