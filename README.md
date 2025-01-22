@@ -54,6 +54,10 @@ ukb-processor extract --help
 ukb-processor convert input.csv output.parquet
 ```
 
+**Note**: If the CSV file is too large, it might exceed memory limits. In such cases, you can consider to:
+* Submit a job to high-performance computing (HPC) cluster if available. Ensure the job requests nodes with sufficient memory or adjusts memory limits in the script.
+* Split the CSV file into smaller chunks using tools like `split` (Linux/MasOS).
+
 2. Extract specific fields from the Parquet file:
 ```bash
 ukb-processor extract data.parquet output.csv --fields 31 21022 21001
